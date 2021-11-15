@@ -16,11 +16,8 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LoaisanphamComponent } from './loaisanpham/loaisanpham.component';
 import { NhacungcapComponent } from './nhacungcap/nhacungcap.component';
-
-import { MasterDataComponent } from './nhacungcap/master-data/master-data.component';
 import { SanphamComponent } from './sanpham/sanpham.component';
-import { PostPutSanphamComponent } from './sanpham/post-put-sanpham/post-put-sanpham.component';
-import { PostPutLoaisanphamComponent } from './loaisanpham/post-put-loaisanpham/post-put-loaisanpham.component';
+import { LienheComponent } from './lienhe/lienhe.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +27,9 @@ import { PostPutLoaisanphamComponent } from './loaisanpham/post-put-loaisanpham/
     SidebarComponent,
     LoaisanphamComponent,
     NhacungcapComponent,
-    MasterDataComponent,
     SanphamComponent,
-    PostPutSanphamComponent,
-    PostPutLoaisanphamComponent,
-
+    LienheComponent,
+    
   ],
   imports: [
     BrowserModule,
