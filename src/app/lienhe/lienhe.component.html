@@ -1,0 +1,72 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <h4 class="page-title">Xử lý liên hệ</h4>
+                </div>
+
+            </div> <!-- end row -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <!-- <h4 class="mt-0 header-title mb-4">Suppliers</h4> -->
+                            <div class="row mb-1">
+                                <div class="col-sm-7">
+                                   
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="">
+                                        <input type="search" id="form1" autocomplete="off" [(ngModel)]="searchText"
+                                            class="form-control" placeholder="&#61442; Tìm kiếm tại đây... " />
+                                    </div>
+                                </div>
+                             
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Tên khách hàng</th>
+                                            <th scope="col">địa chỉ</th>
+                                       
+                                           
+                                            <th scope="col">email</th>
+                                            <th scope="col">điện thoại</th>
+                                           
+                                            <th scope="col">Ngày tạo</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let i = index;let item of lienhe | paginate: { itemsPerPage: 10,
+                                             currentPage: page,
+                                              totalItems:totalLength } | filter:searchText">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{item.tenkh}}</td>
+                                            <td>{{item.diachi}}</td>
+                                            <td>{{item.email}}</td>
+                                            <td>{{item.dienthoai}}</td>
+                                        
+                                            <td>{{item.ngaytao | date:'longDate'}}</td>
+                                      
+                                            <td>
+                                                <button type="button"  class="btn btn-primary" >ấn xem</button>|
+                                                  <button type="button" (click)="deleteClick(item)" class="btn btn-primary" >Xóa</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page-title -->
+    </div>
+    <!-- container-fluid -->
+</div>

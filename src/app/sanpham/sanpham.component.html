@@ -1,0 +1,396 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <h4 class="page-title">Quản lý sản phẩm</h4>
+                </div>
+
+            </div> <!-- end row -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <!-- <h4 class="mt-0 header-title mb-4">Suppliers</h4> -->
+                            <div class="row mb-1" style="margin-bottom: 20px;">
+                                <div class="col-sm-7">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModal" data-backdrop="static" data-keyboard="false">
+                                        Add
+                                    </button>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="">
+                                        <input type="search" id="form1" autocomplete="off" [(ngModel)]="searchText"
+                                            class="form-control" placeholder="&#61442; Tìm kiếm tại đây... " />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Giá bán</th>
+                                            <th scope="col">Giá nhập</th>
+                                            <th scope="col">Hình ảnh</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let i = index;let item of sanpham | paginate: { itemsPerPage: 10,
+                                             currentPage: page,
+                                              totalItems:totalLength } | filter:searchText">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{item.tensp}}</td>
+
+                                            <td>{{ item.giaban | currency:"VND" }}</td>
+                                            
+                                            <td>{{ item.gianhap | currency:"VND" }}</td>
+                                            <td><img style="width:100px;"
+                                                    src="http://localhost:15330/Photos/{{item.hinhanh}}" alt=""></td>
+                                            <td>
+                                                <span *ngIf="item.status;else unactive"
+                                                    class="badge badge-success">Active</span>
+                                                <ng-template #unactive>
+                                                    <span class="badge badge-danger">Unactive</span>
+                                                </ng-template>
+                                            </td>
+                                            <td>
+                                                <button type="button" (click)="onEdit(item.id)"
+                                                    class="btn btn-primary mr-1" data-toggle="modal"
+                                                    data-target="#exampleModal1">Edit</button> |
+                                                <button type="button" (click)="deleteClick(item)"
+                                                    class="btn btn-primary">Xóa</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page-title -->
+    </div>
+    <!-- container-fluid -->
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeClick()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label class="control-label">Tên Sản phẩm</label>
+                    <input type="text" [(ngModel)]="tensp" class="form-control" placeholder="Nhập tên sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Giá nhập</label>
+                    <input type="number" [(ngModel)]="giaban" class="form-control"
+                        placeholder="Nhập giá nhập sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Giá bán</label>
+                    <input type="number" [(ngModel)]="gianhap" class="form-control"
+                        placeholder="Nhập giá bán sản phẩm..." />
+                </div>
+
+                <label for="exampleInputEmail1">Nhà cung cấp :</label>
+                <select class="form-control" [(ngModel)]="mancc">
+                 
+                    <ng-container *ngFor="let nhacungcapList of nhacungcapList">
+                        <option [ngValue]="nhacungcapList.id">{{nhacungcapList.tenncc}} </option>
+                    </ng-container>
+                </select>
+                <label for="exampleInputEmail1">Loại sp :</label>
+                <!-- <input type="number" [(ngModel)]="maloai" class="form-control" /> -->
+                <select class="form-control" [(ngModel)]="maloai">
+
+                    <ng-container *ngFor="let loaispList of loaispList">
+                        <option [ngValue]="loaispList.id">{{loaispList.tenloai}} </option>
+                    </ng-container>
+
+                </select>
+                <div class="form-group">
+                    <label class="">Khung xe</label>
+                    <input type="text" [(ngModel)]="khungxe" class="form-control"
+                        placeholder="Nhập số khung sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">khối lượng</label>
+                    <input type="text" [(ngModel)]="khoiluong" class="form-control"
+                        placeholder="Nhập khối lượng sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="ontrol-label">dung tich xylanh </label>
+                    <input type="text" [(ngModel)]="dungtichxylanh" class="form-control"
+                        placeholder="Nhập dung tích xy lanh sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Động cơ</label>
+                    <input type="text" [(ngModel)]="dongco" class="form-control"
+                        placeholder="Nhập động cơ sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Mức tiêu thụ nguyên liệu </label>
+
+                    <input type="text" [(ngModel)]="muctieuthunguyenlieu" class="form-control"
+                        placeholder="Nhập mức tiêu thụ nguyên liệu của sản phẩm..." />
+
+
+                </div>
+                <div class="form-group">
+                    <label class="">phuoc truoc</label>
+
+                    <input type="text" [(ngModel)]="phuoctruoc" class="form-control"
+                        placeholder="Nhập phuộc trước sản phẩm..." />
+
+                </div>
+
+                <div class="form-group">
+                    <label class="">Phuộc sau</label>
+                    <input type="text" [(ngModel)]="phuocsau" class="form-control"
+                        placeholder="Nhập phuộc sau sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">ĐỘ cao yên</label>
+                    <input type="text" [(ngModel)]="docaoyen" class="form-control"
+                        placeholder="Nhập độ cao yên sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Dài rộng cao</label>
+                    <input type="text" [(ngModel)]="dairongcao" class="form-control"
+                        placeholder="Nhập chiều dài sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Hộp số</label>
+                    <input type="text" [(ngModel)]="hopso" class="form-control"
+                        placeholder="Nhập hộp số  sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Công xuất tối đa </label>
+                    <input type="text" [(ngModel)]="congsuattoida" class="form-control"
+                        placeholder="Nhập công suất tối đa sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class=""> Tiện ích</label>
+                    <input type="text" [(ngModel)]="tienich" class="form-control"
+                        placeholder="Nhập tiện ích  sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class=""> DUng tích bình xăng</label>
+                    <input type="text" [(ngModel)]="dungtichbinhxang" class="form-control"
+                        placeholder="Nhập dung tích bình xăng sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class=""> bảo hành</label>
+                    <input type="text" [(ngModel)]="baohanh" class="form-control"
+                        placeholder="bảo hành cho sản phẩm..." />
+                </div>
+
+
+                <div class="form-group">
+                    <label class="">Ảnh đại diện</label>
+                    <!-- <img [src]=PhotoFilePath height="250px;" width="200px;"> -->
+                    <input type="file" (change)="uploadPhoto($event)" class="form-control" />
+                </div>
+                <section class="content">
+                    <ckeditor [(ngModel)]="mota">
+
+                    </ckeditor>
+                </section>
+                <div class="modal-footer">
+                    <button (click)="add()" class="btn btn-primary">
+                        Thêm mới
+                    </button>
+
+
+                    <button (click)="closeClick()" type="button" class="btn btn-default">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeClick()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="form-group">
+                        <input type="hidden" [(ngModel)]="id" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên Sản phẩm</label>
+                        <input type="text" [(ngModel)]="tensp" class="form-control"
+                            placeholder="Nhập tên sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Giá nhập</label>
+                        <input type="number" [(ngModel)]="giaban" class="form-control"
+                            placeholder="Nhập giá nhập sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Giá bán</label>
+                        <input type="number" [(ngModel)]="gianhap" class="form-control"
+                            placeholder="Nhập giá bán sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Số lượng</label>
+
+                        <input type="number" [(ngModel)]="soluong" class="form-control"
+                            placeholder="Nhập số lượng sản phẩm..." />
+                    </div>
+                    <label for="exampleInputEmail1">Nhà cung cấp :</label>
+                    <select class="form-control" [(ngModel)]="mancc">
+
+                        <ng-container *ngFor="let nhacungcapList of nhacungcapList">
+                            <option [ngValue]="nhacungcapList.id">{{nhacungcapList.tenncc}} </option>
+                        </ng-container>
+                    </select>
+                    <label for="exampleInputEmail1">Loại sp :</label>
+                    <!-- <input type="number" [(ngModel)]="maloai" class="form-control" /> -->
+                    <select class="form-control" [(ngModel)]="maloai">
+
+                        <ng-container *ngFor="let loaispList of loaispList">
+                            <option [ngValue]="loaispList.id">{{loaispList.tenloai}} </option>
+                        </ng-container>
+
+                    </select>
+                    <div class="form-group">
+                        <label class="">Khung xe</label>
+                        <input type="text" [(ngModel)]="khungxe" class="form-control"
+                            placeholder="Nhập số khung sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">khối lượng</label>
+                        <input type="text" [(ngModel)]="khoiluong" class="form-control"
+                            placeholder="Nhập khối lượng sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="ontrol-label">dung tich xylanh </label>
+                        <input type="text" [(ngModel)]="dungtichxylanh" class="form-control"
+                            placeholder="Nhập dung tích xy lanh sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Động cơ</label>
+                        <input type="text" [(ngModel)]="dongco" class="form-control"
+                            placeholder="Nhập động cơ sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Mức tiêu thụ nguyên liệu </label>
+
+                        <input type="text" [(ngModel)]="muctieuthunguyenlieu" class="form-control"
+                            placeholder="Nhập mức tiêu thụ nguyên liệu của sản phẩm..." />
+
+
+                    </div>
+                    <div class="form-group">
+                        <label class="">phuoc truoc</label>
+
+                        <input type="text" [(ngModel)]="phuoctruoc" class="form-control"
+                            placeholder="Nhập phuộc trước sản phẩm..." />
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="">Phuộc sau</label>
+                        <input type="text" [(ngModel)]="phuocsau" class="form-control"
+                            placeholder="Nhập phuộc sau sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">ĐỘ cao yên</label>
+                        <input type="text" [(ngModel)]="docaoyen" class="form-control"
+                            placeholder="Nhập độ cao yên sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Dài rộng cao</label>
+                        <input type="text" [(ngModel)]="dairongcao" class="form-control"
+                            placeholder="Nhập chiều dài sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Hộp số</label>
+                        <input type="text" [(ngModel)]="hopso" class="form-control"
+                            placeholder="Nhập hộp số  sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="">Công xuất tối đa </label>
+                        <input type="text" [(ngModel)]="congsuattoida" class="form-control"
+                            placeholder="Nhập công suất tối đa sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class=""> Tiện ích</label>
+                        <input type="text" [(ngModel)]="tienich" class="form-control"
+                            placeholder="Nhập tiện ích  sản phẩm..." />
+                    </div>
+                    <div class="form-group">
+                        <label class=""> DUng tích bình xăng</label>
+                        <input type="text" [(ngModel)]="dungtichbinhxang" class="form-control"
+                            placeholder="Nhập dung tích bình xăng sản phẩm..." />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" [(ngModel)]="status" [value]="true">
+                        <label class="form-check-label">
+                            Active
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" [(ngModel)]="status" [value]="false">
+                        <label class="form-check-label">
+                            Unactive
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class=""> bảo hành</label>
+                    <input type="text" [(ngModel)]="baohanh" class="form-control"
+                        placeholder="bảo hành cho sản phẩm..." />
+                </div>
+                <div class="form-group">
+                    <label class="">Ảnh đại diện</label>
+                    <!-- <img [src]=PhotoFilePath height="250px;" width="200px;"> -->
+                    <input type="file" (change)="uploadPhoto($event)" class="form-control" />
+                </div>
+                <section class="content">
+                    <ckeditor [(ngModel)]="mota">
+
+                    </ckeditor>
+                </section>
+                <div class="modal-footer">
+                    <button (click)="update()" class="btn btn-primary">
+                        Update
+                    </button>
+
+
+                    <button (click)="closeClick()" type="button" class="btn btn-default">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
